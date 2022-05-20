@@ -28,7 +28,12 @@ class HomeViewModel extends BaseViewModel {
 
   Future<void> getStudents() async {
     state = PageState.LOADING;
-    var response = await client.from('student').select().execute();
+    var response = await client
+        .from('student')
+        .select()
+        .eq('lesson', lesson.name)
+        .eq('uuid', qrData)
+        .execute();
     var list = response.data;
     var resposneStudenList =
         (list as List).map((e) => Student.fromJson(e)).toList();
