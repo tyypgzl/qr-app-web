@@ -22,16 +22,6 @@ class HomeView extends BaseView<HomeViewModel> {
         iconTheme: IconThemeData(
           color: AppColors.instance.black,
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: IconButton(
-              onPressed: viewModel.getStudents,
-              icon: const Icon(Icons.refresh),
-              iconSize: 32,
-            ),
-          ),
-        ],
         title: Text(
           lesson.name,
           style: TextStyle(
@@ -97,14 +87,33 @@ class HomeView extends BaseView<HomeViewModel> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: CustomButton(
-                  onTap: viewModel.stopLesson,
-                  title: 'Yoklamayı Bitir',
-                  backgroundColor: AppColors.instance.orangeAccent,
-                  foregroundColor: AppColors.instance.black,
-                ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: CustomButton(
+                        onTap: viewModel.stopLesson,
+                        title: 'Yoklamayı Bitir',
+                        backgroundColor: AppColors.instance.orangeAccent,
+                        foregroundColor: AppColors.instance.black,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: CustomButton(
+                        onTap: viewModel.createExcelFile,
+                        title: 'Excele Dönüştür',
+                        backgroundColor: AppColors.instance.orangeAccent,
+                        foregroundColor: AppColors.instance.black,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

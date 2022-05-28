@@ -12,12 +12,12 @@ abstract class BaseView<T extends BaseViewModel> extends StatelessWidget {
 
   T get viewModel;
 
-  ThemeData theme =
+  final theme =
       Theme.of(NavigationService.instance.navigatorKey.currentContext!);
-  TextTheme textTheme =
+  final textTheme =
       Theme.of(NavigationService.instance.navigatorKey.currentContext!)
           .textTheme;
-  Size screenSize =
+  final screenSize =
       MediaQuery.of(NavigationService.instance.navigatorKey.currentContext!)
           .size;
 
