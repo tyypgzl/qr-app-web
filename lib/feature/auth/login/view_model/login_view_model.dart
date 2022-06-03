@@ -133,15 +133,18 @@ class LoginViewModel extends BaseViewModel with ValidationMixin {
                     showSnackBar(
                       context: context,
                       content: Text(
-                        '''Şifre sıfırlama işlemi tamamlandı.''',
-                        style: TextStyle(color: AppColors.instance.black),
+                        '''Şifre sıfırlama adresi mail adresinize iletilmiştir.''',
+                        style: TextStyle(
+                            color: AppColors.instance.black, fontSize: 16),
                       ),
                       isError: false,
                     );
                   } else {
                     showSnackBar(
                       context: context,
-                      content: const Text('''Bir hata oluştu.'''),
+                      content: Text('''Bir hata oluştu.''',
+                          style: TextStyle(
+                              color: AppColors.instance.black, fontSize: 16)),
                       isError: false,
                     );
                     log('Error: ${response.error!.message} Code: ${response.error!.statusCode}');
