@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:web_app/core/base/base_view_model.dart';
 import 'package:web_app/core/constants/route_constants.dart';
+import 'package:web_app/core/crypto/crypto_manager.dart';
 import 'package:web_app/core/enum/page_state_enum.dart';
 import 'package:web_app/core/mixin/validation_mixin.dart';
 import 'package:web_app/core/navigation/navigation_service.dart';
@@ -64,8 +65,9 @@ class LoginViewModel extends BaseViewModel with ValidationMixin {
 
       var lesson = Lesson(name: '', teacherName: name, teacherSurname: surName);
 
-      var response =
-          await supabaseAuthService.login(email: email, password: password);
+      var encryptedPassword = CryptoManager.encryptData(data: password!);
+      var response = await supabaseAuthService.login(
+          email: email, password: encryptedPassword);
       if (response.statusCode == 200) {
         await navigationService.pushNamedAndRemoveUntil(
             routePath: RouteConstants.create, args: lesson);

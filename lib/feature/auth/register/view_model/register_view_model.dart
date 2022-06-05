@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:web_app/core/base/base_view_model.dart';
 import 'package:web_app/core/constants/route_constants.dart';
+import 'package:web_app/core/crypto/crypto_manager.dart';
 import 'package:web_app/core/enum/page_state_enum.dart';
 import 'package:web_app/core/mixin/validation_mixin.dart';
 import 'package:web_app/core/navigation/navigation_service.dart';
@@ -49,8 +50,9 @@ class RegisterViewModel extends BaseViewModel with ValidationMixin {
 
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
+      var encryptedPassword = CryptoManager.encryptData(data: password!);
       var responseAuth = await supabaseAuthService.register(
-          email: email!, password: password!);
+          email: email!, password: encryptedPassword);
       if (responseAuth.statusCode == 200) {
         var responseDatabase =
             await client.from('user').insert(user.toJson()).execute();
@@ -69,12 +71,16 @@ class RegisterViewModel extends BaseViewModel with ValidationMixin {
     state = PageState.LOADED;
   }
 
-  UserModel get user => UserModel(
-      name: firstName ?? '',
-      surname: lastName ?? '',
-      email: email ?? '',
-      password: password ?? '',
-      uuid: 'uuid');
+  UserModel get user {
+    var encryptedPassword = CryptoManager.encryptData(data: password!);
+
+    return UserModel(
+        name: firstName ?? '',
+        surname: lastName ?? '',
+        email: email ?? '',
+        password: encryptedPassword,
+        uuid: 'uuid');
+  }
 
   void loginButtonOnTap() {
     navigationService.pushNamedAndRemoveUntil(routePath: RouteConstants.login);
@@ -82,11 +88,7 @@ class RegisterViewModel extends BaseViewModel with ValidationMixin {
 
   String? nameValidation(String? value) {
     if (firstName != null) {
-      if (isEmailValid(value!)) {
-        return null;
-      } else {
-        return 'Geçerli bir ad giriniz.';
-      }
+      return null;
     } else {
       return 'Geçerli bir ad giriniz.';
     }
@@ -94,11 +96,7 @@ class RegisterViewModel extends BaseViewModel with ValidationMixin {
 
   String? lastNameValidation(String? value) {
     if (lastName != null) {
-      if (isEmailValid(value!)) {
-        return null;
-      } else {
-        return 'Geçerli bir soyad giriniz.';
-      }
+      return null;
     } else {
       return 'Geçerli bir soyad giriniz.';
     }
