@@ -9,12 +9,17 @@ import 'package:web_app/core/enum/page_state_enum.dart';
 import 'package:web_app/core/navigation/navigation_service.dart';
 import 'package:web_app/core/utils/show_snack_bar.dart';
 import 'package:web_app/feature/create/model/created_lesson.dart';
+import 'package:web_app/feature/create/model/one_signal_notification.dart';
+import 'package:web_app/feature/create/service/create_service.dart';
+import 'package:web_app/feature/shared/utils/api_const.dart';
 import 'package:web_app/feature/shared/utils/app_colors.dart';
 
 class CreateViewModel extends BaseViewModel {
   final Lesson lesson;
 
   CreateViewModel({required this.lesson});
+
+  CreateService service = CreateService();
 
   String? lessonName;
 
@@ -31,6 +36,14 @@ class CreateViewModel extends BaseViewModel {
     notifyListeners();
     return value;
   }
+
+  OneSignalNotification get requestNotification => OneSignalNotification(
+      appId: ApiConstants.instance.oneSignalAppId,
+      contents: Headings(
+          en: "$lessonName class attendance has started.",
+          tr: "$lessonName dersi yoklaması başlamıştır."),
+      headings: Headings(tr: "Yoklama Duyurusu", en: "Attendance Notice"),
+      includedSegments: ["Subscribed Users"]);
 
   @override
   Future<void> init() async {
@@ -56,6 +69,7 @@ class CreateViewModel extends BaseViewModel {
                 style: TextStyle(color: AppColors.instance.black),
               ),
               isError: false);
+          await service.createNotification(requestNotification.toJson());
         } else {
           log('Message: ' +
               response.error!.message +

@@ -1,17 +1,16 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:crypto/crypto.dart';
 
 class CryptoManager {
   CryptoManager._();
   static String encryptData({required String data}) {
-    log('Data: ' + data);
+    //log('Data: ' + data);
     var bytes = utf8.encode(data);
-    log('Bytes: ' + bytes.toString());
+    //log('Bytes: ' + bytes.toString());
     Digest encrytedBytes = sha256.convert(bytes);
-    log('Encrypted Bytes: ' + encrytedBytes.bytes.toString());
+    //log('Encrypted Bytes: ' + encrytedBytes.bytes.toString());
     var encryptedData = '$encrytedBytes';
-    log('Encypted Data: ' + encryptedData);
+    //log('Encypted Data: ' + encryptedData);
     return encryptedData;
   }
 

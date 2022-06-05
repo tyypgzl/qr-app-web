@@ -28,6 +28,7 @@ dependencies:
   syncfusion_flutter_xlsio: ^20.1.57-beta
   intl: ^0.17.0
   crypto: ^3.0.2
+  dio: ^4.0.6
   
 dev_dependencies:
   flutter_test:
